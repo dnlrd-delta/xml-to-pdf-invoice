@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Rechnung</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            color: #333;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .company {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .invoice-info {
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background: #f2f2f2;
+            text-align: left;
+            padding: 10px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .total {
+            text-align: right;
+            font-size: 18px;
+            margin-top: 30px;
+        }
+
+        .footer {
+            margin-top: 60px;
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div>
+        <h1>Rechnung</h1>
+        <div class="company">
+            <strong>{{ seller.name }}</strong><br>
+            {{ seller.address }}<br>
+            {{ seller.city }}
+        </div>
+    </div>
+
+    <div class="invoice-info">
+        <strong>Rechnungsnummer:</strong> {{ invoice.number }}<br>
+        <strong>Datum:</strong> {{ invoice.date }}
+    </div>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Position</th>
+            <th>Beschreibung</th>
+            <th>Menge</th>
+            <th>Preis</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price }} €</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="total">
+    <strong>Gesamtbetrag: {{ total }} €</strong>
+</div>
+
+<div class="footer">
+    Vielen Dank für Ihren Auftrag.
+</div>
+
+</body>
+</html>
