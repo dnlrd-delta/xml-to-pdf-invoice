@@ -1,28 +1,41 @@
-from fastapi import FastAPI, UploadFile
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.requests import Request
+
 from invoice_parser import parse_invoice_xml
 from pdf_generator import generate_pdf
 
+import os
+
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-@app.get("/", response_class=HTMLResponse)
-def index():
-    with open("static/index.html", encoding="utf-8") as f:
-        return f.read()
+app.mount(
+    "/static",
+    StaticFiles(directory=os.path.join(BASE_DIR, "static")),
+    name="static"
+)
+
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+
+
+@app.get("/")
+def index(request: Request):
+    return templates.TemplateResponse("invoice.html", {"request": request})
+
 
 @app.post("/upload")
-async def upload_file(file: UploadFile):
+async def upload(file: UploadFile = File(...)):
     xml_bytes = await file.read()
     invoice_data = parse_invoice_xml(xml_bytes)
-
     pdf_path = generate_pdf(invoice_data)
 
     return FileResponse(
-        path=pdf_path,
+        pdf_path,
         media_type="application/pdf",
-        filename="rechnung.pdf"
+        filename="invoice.pdf"
     )
+
