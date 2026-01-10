@@ -68,17 +68,15 @@
 <div class="header">
     <div>
         <h1>Rechnung</h1>
-        <div class="company">
-            <strong>{{ seller.name }}</strong><br>
-            {{ seller.address }}<br>
-            {{ seller.city }}
-        </div>
-    </div>
+     <div class="company">
+    <strong>{{ invoice.seller.name }}</strong><br>
+    {{ invoice.seller.address }}<br>
+    {{ invoice.seller.city }}
+</div>
 
-    <div class="invoice-info">
-        <strong>Rechnungsnummer:</strong> {{ invoice.number }}<br>
-        <strong>Datum:</strong> {{ invoice.date }}
-    </div>
+<div class="invoice-info">
+    <strong>Rechnungsnummer:</strong> {{ invoice.number }}<br>
+    <strong>Datum:</strong> {{ invoice.date }}
 </div>
 
 <table>
@@ -91,7 +89,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for item in items %}
+        {% for item in invoice.items %}
         <tr>
             <td>{{ loop.index }}</td>
             <td>{{ item.description }}</td>
@@ -101,6 +99,7 @@
         {% endfor %}
     </tbody>
 </table>
+
 
 <div class="total">
     <strong>Gesamtbetrag: {{ total }} €</strong>

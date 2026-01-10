@@ -24,7 +24,13 @@ templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 @app.get("/")
 def index(request: Request):
-    return templates.TemplateResponse("invoice.html", {"request": request})
+return templates.TemplateResponse(
+    "invoice.html",
+    {
+        "request": request,
+        "invoice": invoice_data
+    }
+)
 
 
 @app.post("/upload")
